@@ -1,17 +1,19 @@
 /*
-  Author : Imam Syuhada
+Author : Imam Syuhada
 */
-
-var versionString = 'v2.9-handling revision add log'
+var versionString = 'v2.10-add get'
 
 var idSpeadSheet = SpreadsheetApp.openById('1llkTzB7K1VeA9eRoYUtM_HwqFHocEhiiVGF808zbGgw');
+//var idDrive = Drive.openById('1llkTzB7K1VeA9eRoYUtM_HwqFHocEhiiVGF808zbGgw');
 
 var jsonObjResponse = { 
   status: 'gagal',
   version : versionString
 }
+
                        
 function appendData(array){
+  
   idSpeadSheet.appendRow([array[0],
                           array[1],
                           array[2],
@@ -32,16 +34,36 @@ function validateDatasForm(array){
   return true;
 }
 
+function jsonResult(jsonObjResponse){
+  var JSONString = JSON.stringify(jsonObjResponse);
+  var JSONOutput = ContentService.createTextOutput(JSONString);
+  
+  return JSONOutput.setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(req){
+  
+  const { 
+    parameter, 
+    postData: { 
+      contents, 
+        type 
+    } = {} 
+  } = req;
+  
+  const { source } = parameter;
+  
+  var jsonBody = JSON.parse(contents);
+ 
   var datas = [
     Utilities.formatDate(new Date(), "GMT+7", "MM/dd/yyyy HH:mm:ss"),
-    req.parameter.id,
-    req.parameter.nip,
-    req.parameter.name,
-    req.parameter.satuankerja,
-    req.parameter.subbagian,
-    req.parameter.longitude,
-    req.parameter.latitude
+    jsonBody.id,
+    jsonBody.nip,
+    jsonBody.name,
+    jsonBody.satuankerja,
+    jsonBody.subbagian,
+    jsonBody.longitude,
+    jsonBody.latitude
   ];
 
   if(validateDatasForm(datas) == false){
@@ -52,9 +74,14 @@ function doPost(req){
     jsonObjResponse.status = "sukses"
   }
   
-  var JSONString = JSON.stringify(jsonObjResponse);
-  var JSONOutput = ContentService.createTextOutput(JSONString);
+  //  jsonObjResponse.req = req
   
-  JSONOutput.setMimeType(ContentService.MimeType.JSON);
-  return JSONOutput;
+  return jsonResult(jsonObjResponse);
+}
+
+function doGet(req) {
+  jsonObjResponse.status = "warning";
+  jsonObjResponse.message = "under construction";
+  
+  return jsonResult(jsonObjResponse);
 }
