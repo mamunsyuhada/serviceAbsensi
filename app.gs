@@ -1,7 +1,7 @@
 /*
-Author : Imam Syuhada
+   Author : Imam Syuhada
 */
-var versionString = 'v2.10-add get'
+var versionString = 'v2.13-SignatureBS64'
 
 var idSpeadSheet = SpreadsheetApp.openById('1llkTzB7K1VeA9eRoYUtM_HwqFHocEhiiVGF808zbGgw');
 //var idDrive = Drive.openById('1llkTzB7K1VeA9eRoYUtM_HwqFHocEhiiVGF808zbGgw');
@@ -21,7 +21,8 @@ function appendData(array){
                           array[4],
                           array[5],
                           array[6],
-                          array[7]
+                          array[7],
+                          array[8]
                          ]);
 }
 
@@ -42,7 +43,7 @@ function jsonResult(jsonObjResponse){
 }
 
 function doPost(req){
-  
+  /*
   const { 
     parameter, 
     postData: { 
@@ -50,10 +51,9 @@ function doPost(req){
         type 
     } = {} 
   } = req;
+  */
   
-  const { source } = parameter;
-  
-  var jsonBody = JSON.parse(contents);
+  var jsonBody = JSON.parse(req.postData.contents);
  
   var datas = [
     Utilities.formatDate(new Date(), "GMT+7", "MM/dd/yyyy HH:mm:ss"),
@@ -63,7 +63,8 @@ function doPost(req){
     jsonBody.satuankerja,
     jsonBody.subbagian,
     jsonBody.longitude,
-    jsonBody.latitude
+    jsonBody.latitude,
+    jsonBody.signature
   ];
 
   if(validateDatasForm(datas) == false){
@@ -74,7 +75,7 @@ function doPost(req){
     jsonObjResponse.status = "sukses"
   }
   
-  //  jsonObjResponse.req = req
+ //  jsonObjResponse.req = req
   
   return jsonResult(jsonObjResponse);
 }
