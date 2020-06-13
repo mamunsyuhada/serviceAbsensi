@@ -7,6 +7,10 @@ I use Google Apps Script as backend service.
 And Google Sheet as Database
 ![gsheet-logo](https://upload.wikimedia.org/wikipedia/en/7/7d/Google_Sheets_Logo.jpg)
 
+# How to Modify
+
+**TODO**
+
 # Demo
 
 ![demo-insomnia](/docs/demo.gif)
